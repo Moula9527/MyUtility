@@ -25,6 +25,7 @@ public class Minning_Hammer extends PickaxeItem {
     public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
         world.setBlockState(pos, state);
         HitResult hitResult = raycast(world,(PlayerEntity) miner, RaycastContext.FluidHandling.NONE);
+        world.removeBlock(pos,false);
         Direction direction;
         direction = ((BlockHitResult)hitResult).getSide();
         int mx = 1;
@@ -47,11 +48,12 @@ public class Minning_Hammer extends PickaxeItem {
                 for (int z:var){
                     BlockPos newpos = pos.add((x*mx),(y*my),(z*mz));
                     BlockState blockState = world.getBlockState(newpos);
-                    if (blockState.getBlock() == Blocks.STONE){
+                    if (this.isEffectiveOn(blockState)){
                         blockState.getBlock().onBreak(world, newpos, blockState, (PlayerEntity) miner);
-                        boolean bl = world.breakBlock(newpos,!newpos.equals(pos),null,3);
+                        boolean bl = world.removeBlock(newpos, false);
                         if (bl) {
                             blockState.getBlock().onBroken(world, newpos, blockState);
+                            blockState.getBlock().afterBreak(world, (PlayerEntity) miner, newpos, blockState, null, stack.copy());
                         }
                     }
                 }

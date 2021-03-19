@@ -26,7 +26,7 @@ public class MyUtility implements ModInitializer {
     public static final Item Animal_sack = new Animal_sack(new FabricItemSettings().group(ItemGroup.MISC).maxCount(1));
     public static final Item Time_cloth = new Time_Cloth(new FabricItemSettings().group(ItemGroup.MISC).maxCount(1));
     public static final Item Scythe = new Scythe(ToolMaterials.IRON, 3, -2.4F, new FabricItemSettings().group(ItemGroup.MISC),3);
-    public static final Item Minning_Hammer = new Minning_Hammer(ToolMaterials.DIAMOND,9,-3.5F,new FabricItemSettings().group(ItemGroup.MISC));
+    public static final Item Minning_Hammer = new Minning_Hammer(ToolMaterials.DIAMOND,12,-3.5F,new FabricItemSettings().group(ItemGroup.MISC).maxDamage(4096));
     public static final Block Pedestal = new Pedestal(FabricBlockSettings.of(Material.METAL).strength(4.0f));
     public static BlockEntityType<Pedestal_Entity> PedestalEntity;
 

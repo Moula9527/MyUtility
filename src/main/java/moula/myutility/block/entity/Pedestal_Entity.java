@@ -11,6 +11,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
@@ -34,13 +35,14 @@ public class Pedestal_Entity extends BlockEntity implements ImplementedInventory
 
     @Override
     public CompoundTag toTag(CompoundTag tag) {
+        super.toTag(tag);
         Inventories.toTag(tag,items);
-        return super.toTag(tag);
+        return tag;
     }
 
     @Override
     public void fromTag(BlockState state, CompoundTag tag) {
-        Inventories.toTag(tag,items);
+        Inventories.fromTag(tag,items);
         super.fromTag(state, tag);
     }
 

@@ -2,10 +2,7 @@ package moula.myutility.block;
 
 import moula.myutility.block.entity.Trap_Entity;
 import moula.myutility.item.Animal_sack;
-import moula.myutility.item.Time_Cloth;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
@@ -18,8 +15,10 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
 public class Trap extends Block implements BlockEntityProvider {
@@ -54,9 +53,22 @@ public class Trap extends Block implements BlockEntityProvider {
     }
 
     @Override
+    public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
+        for (Direction dirs : Direction.values()){
+            if (dirs.getAxis()== Direction.Axis.Y){
+                if (!(world.getBlockState(pos.offset(dirs)).getBlock() == Blocks.AIR))
+                    return false;
+            }else {
+                if (!(world.getBlockState(pos.offset(dirs)).isSideSolidFullSquare(world,pos.offset(dirs),dirs.getOpposite())))
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
     public void onSteppedOn(World world, BlockPos pos, Entity entity) {
         if (entity instanceof AnimalEntity||entity instanceof VillagerEntity&&!world.isClient){
-            System.out.println("stepped");
             BlockEntity trap_entity = world.getBlockEntity(pos);
             ItemStack sack_item = ((Trap_Entity)trap_entity).onCapture(entity);
             if (sack_item!=null){

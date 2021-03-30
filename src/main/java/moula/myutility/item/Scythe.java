@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class Scythe extends SwordItem {
 
-    int area = 0;
+    int area;
 
     public Scythe(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings,int area) {
         super(toolMaterial, attackDamage, attackSpeed, settings);

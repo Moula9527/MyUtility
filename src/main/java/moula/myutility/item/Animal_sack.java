@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,21 +30,6 @@ public class Animal_sack extends Item {
 
     public Animal_sack(Settings settings) {
         super(settings);
-    }
-
-    @Override
-    public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-        if (entity instanceof AnimalEntity){
-            CompoundTag entitytag = entity.toTag(new CompoundTag());
-            String id = Registry.ENTITY_TYPE.getId(entity.getType()).toString();
-            entitytag.putString("id",id);
-            user.getStackInHand(hand).getOrCreateTag().put("EntityTag",entitytag);
-            entity.remove();
-            return ActionResult.SUCCESS;
-        }else{
-            return ActionResult.PASS;
-        }
-
     }
 
     @Override

@@ -9,6 +9,8 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -19,9 +21,16 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class Pedestal extends Block implements BlockEntityProvider {
+    public static final BooleanProperty ItemInside = BooleanProperty.of("iteminside");
 
     public Pedestal(Settings settings) {
         super(settings);
+        setDefaultState(getStateManager().getDefaultState().with(ItemInside,false));
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(ItemInside);
     }
 
     @Override
@@ -43,10 +52,12 @@ public class Pedestal extends Block implements BlockEntityProvider {
         if (blockentity.getStack(0).isEmpty()&&player.getStackInHand(hand).getItem() instanceof Time_Cloth){
             blockentity.setStack(0,player.getStackInHand(hand).copy());
             player.getStackInHand(hand).setCount(0);
+            world.setBlockState(pos,state.with(ItemInside,true));
             return ActionResult.SUCCESS;
         } else if (player.getStackInHand(hand).isEmpty()&&!blockentity.getStack(0).isEmpty()){
             player.inventory.offerOrDrop(world,blockentity.getStack(0));
             blockentity.removeStack(0);
+            world.setBlockState(pos,state.with(ItemInside,false));
             return ActionResult.SUCCESS;
         }
 

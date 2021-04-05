@@ -1,5 +1,6 @@
 {
   "variants": {
-    "": { "model": "myutility:block/pedestal" }
+    "iteminside=false": { "model": "myutility:block/pedestal" },
+    "iteminside=true": {"model": "myutility:block/pedestal_itemwithin"}
   }
 }
